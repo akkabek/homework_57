@@ -29,7 +29,13 @@
                         <a href="{% url 'detail' task.pk %}">{{ task.summary }}</a>
                     </td>
                     <td>{{ task.status}}</td>
-                    <td>{{ task.type}}</td>
+                    <td>
+                        {% for t in task.type.all %}
+                            <span class="badge bg-secondary">{{ t }}</span>
+                        {% empty %}
+                            <span class="text-muted">—</span>
+                        {% endfor %}
+                    </td>
                     <td>{{ task.created_at}}</td>
                     <td>{{ task.updated_at}}</td>
                     <td>

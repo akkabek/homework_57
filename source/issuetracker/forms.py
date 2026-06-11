@@ -15,5 +15,5 @@ class TaskForm(ModelForm):
             'summary':     forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
             'status':      forms.Select(attrs={'class': 'form-select'}),
-            'type':        forms.Select(attrs={'class': 'form-select'}),
+            'type':        forms.CheckboxSelectMultiple(),
         }

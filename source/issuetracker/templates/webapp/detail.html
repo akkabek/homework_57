@@ -7,7 +7,9 @@
 <div class="card mt-3">
     <div class="card-body">
         <h5 class="card-title">{{ task.summary }}</h5>
-        <p><strong>Тип:</strong> {{ task.type }}</p>
+        {% for t in task.type.all %}
+            <span class="badge bg-secondary">{{ t }}</span>
+        {% endfor %}
         <p><strong>Статус:</strong> {{ task.status }}</p>
         <p><strong>Время создания:</strong> {{ task.created_at }}</p>
         <p><strong>Время обновления:</strong> {{ task.updated_at }}</p>

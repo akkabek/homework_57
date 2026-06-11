@@ -3,8 +3,14 @@ from django.db import models
 class Status(models.Model):
     name = models.CharField(null=False, blank=False, max_length=50, verbose_name='Название')
 
+    def __str__(self):
+        return self.name
+
 class Type(models.Model):
     name = models.CharField(null=False, blank=False, max_length=50, verbose_name='Название')
+
+    def __str__(self):
+        return self.name
 
 class Task(models.Model):
     summary = models.CharField(null=False, blank=False, max_length=500, verbose_name='Краткое описание')

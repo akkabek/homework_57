@@ -33,7 +33,7 @@
                     <td>{{ task.created_at}}</td>
                     <td>{{ task.updated_at}}</td>
                     <td>
-                        <a href="#" class="btn btn-primary btn-sm">
+                        <a href="{% url 'update' task.pk%}" class="btn btn-primary btn-sm">
                             Изменить
                         </a>
                         <a href="#" class="btn btn-danger btn-sm">

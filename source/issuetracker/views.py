@@ -35,3 +35,23 @@ class CreateView(TemplateView):
         if form.is_valid():
             form.save()
             return redirect('list')
+
+class UpdateView(TemplateView):
+    template_name = 'webapp/update.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['task'] = get_object_or_404(Task, pk=self.kwargs['pk'])
+        context['form']=TaskForm(instance=context['task'])
+        return context
+
+    def post(self, request, *args, **kwargs):
+        task = get_object_or_404(Task, pk=self.kwargs['pk'])
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            return redirect('list')
+        return self.render_to_response({
+            'task' : task,
+            'form' : form
+            })

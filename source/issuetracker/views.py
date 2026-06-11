@@ -55,3 +55,16 @@ class UpdateView(TemplateView):
             'task' : task,
             'form' : form
             })
+
+class DeleteView(TemplateView):
+    template_name = 'webapp/delete.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['task'] = get_object_or_404(Task, pk=self.kwargs['pk'])
+        return context
+
+    def post(self, request, *args, **kwargs):
+        task = get_object_or_404(Task, pk=self.kwargs['pk'])
+        task.delete()
+        return redirect('list')

@@ -1,0 +1,26 @@
+{% extends 'webapp/base.html' %}
+
+{% block content %}
+
+<h2>Задача {{ task.pk }}</h2>
+
+<div class="card mt-3">
+    <div class="card-body">
+        <h5 class="card-title">{{ task.summary }}</h5>
+        <p><strong>Тип:</strong> {{ task.type }}</p>
+        <p><strong>Статус:</strong> {{ task.status }}</p>
+        <p><strong>Время создания:</strong> {{ task.created_at }}</p>
+        <p><strong>Время обновления:</strong> {{ task.updated_at }}</p>
+        <hr>
+        <p><strong>Подробное описание:</strong></p>
+        {% if task.description %}
+            <p style="white-space: pre-wrap;">{{ task.description }}</p>
+        {% else %}
+            <p class="text-muted">Не указано</p>
+        {% endif %}
+    </div>
+</div>
+
+<a href="{% url 'index' %}" class="btn btn-secondary mt-3">← Назад к списку</a>
+
+{% endblock %}

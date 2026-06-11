@@ -1,0 +1,56 @@
+{% extends 'webapp/base.html' %}
+
+{% block content %}
+
+<h2>Список задач</h2>
+
+{% if tasks %}
+    <form method="post">
+        {% csrf_token %}
+        <table class="table table-bordered mt-3">
+            <thead class="table-dark">
+                <tr>
+                    <th>Чекбоксы</th>
+                    <th>Заголовок</th>
+                    <th>Статус</th>
+                    <th>Тип</th>
+                    <th>Дата создания</th>
+                    <th>Дата обновления</th>
+                    <th>Действие</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                <tr>
+                    <td>
+                        <input type="checkbox" name="task_ids" value="{{ task.pk }}" class="task-checkbox">
+                    </td>
+                    <td>
+                        <a href="{% url 'detail' task.pk %}">{{ task.summary }}</a>
+                    </td>
+                    <td>{{ task.status}}</td>
+                    <td>{{ task.type}}</td>
+                    <td>{{ task.created_at}}</td>
+                    <td>{{ task.updated_at}}</td>
+                    <td>
+                        <a href="#" class="btn btn-primary btn-sm">
+                            Изменить
+                        </a>
+                        <a href="#" class="btn btn-danger btn-sm">
+                            Удалить
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <button type="submit" class="btn btn-danger">
+            🗑 Удалить выбранные
+        </button>
+    </form>
+{% else %}
+    <p class="mt-3">Задач пока нет. <a href="#">Добавить первую задачу</a></p>
+{% endif %}
+
+{% endblock %}

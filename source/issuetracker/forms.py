@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django import forms
 from django.forms import ModelForm
 from issuetracker.models import Task
@@ -17,3 +18,20 @@ class TaskForm(ModelForm):
             'status':      forms.Select(attrs={'class': 'form-select'}),
             'type':        forms.CheckboxSelectMultiple(),
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        summary = cleaned_data.get("summary")
+        description = cleaned_data.get("description")
+
+        if summary and description and summary == description:
+            raise ValidationError("Заголовок и подробное описание не могут быть похожи")
+        return cleaned_data
+
+    def clean_summary(self):
+        summary = self.cleaned_data['summary']
+
+        if len(summary) < 7:
+            raise ValidationError('Заголовок слишком короткий!')
+
+        return summary

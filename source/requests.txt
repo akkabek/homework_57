@@ -1,0 +1,34 @@
+Request 1
+from issuetracker.models import Task
+from django.utils import timezone
+from datetime import timedelta
+
+month_ago_from_now = timezone.now() - timedelta(days=30)
+closed_month_ago = Task.objects.filter(status__name="Выполнено", updated_at__gte=month_ago_from_now)
+
+for task in closed_month_ago:
+    print(task)
+
+
+Request 2
+from issuetracker.models import Task
+from django.db.models import Q
+one_status_and_one_type = Task.objects.filter(
+Q(Q(status__name="Выполнено") | Q(status__name="В процессе")) &
+Q(Q(type__name="Задача") | Q(type__name="Улучшение"))
+).distinct()
+
+for task in one_status_and_one_type:
+    print(task)
+
+Request 3
+from issuetracker.models import Task
+from django.db.models import Q
+not_closed_bugs = Task.objects.filter(
+~Q(status__name="Выполнено") &
+(Q(summary__icontains="bug") | Q(type__name="Ошибка"))
+).distinct()
+
+for task in not_closed_bugs:
+    print(task)
+

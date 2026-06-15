@@ -32,3 +32,24 @@ not_closed_bugs = Task.objects.filter(
 for task in not_closed_bugs:
     print(task)
 
+Request 4
+from issuetracker.models import Task
+only_fields = Task.objects.values("id", "summary", "status__name", "type__name")
+
+for row in only_fields:
+    print(row["id"], row["summary"], row["type__name"], row["status__name"])
+
+Request 5
+from issuetracker.models import Task
+from django.db.models import F
+same_summary_description = Task.objects.filter(summary=F("description"))
+
+for task in same_summary_description:
+    print (task)
+
+Request 6
+from issuetracker.models import Task
+from django.db.models import Count
+tasks_per_type = Type.objects.annotate(task_count=Count("task"))
+for type_obj in tasks_per_type:
+    print(type_obj.name, type_obj.task_count)

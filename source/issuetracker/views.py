@@ -1,4 +1,5 @@
-from django.views.generic import TemplateView
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView, FormView
 
 from issuetracker.forms import TaskForm
 from issuetracker.models import Task
@@ -22,39 +23,34 @@ class DetailView(TemplateView):
         context['task'] = get_object_or_404(Task, pk=self.kwargs['pk'])
         return context
 
-class CreateView(TemplateView):
+class CreateView(FormView):
     template_name = 'webapp/create.html'
+    form_class = TaskForm
+    success_url = reverse_lazy('list')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['form']=TaskForm()
-        return context
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
 
-    def post(self, request, *args, **kwargs):
-        form = TaskForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('list')
-
-class UpdateView(TemplateView):
+class UpdateView(FormView):
     template_name = 'webapp/update.html'
+    form_class = TaskForm
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['task'] = get_object_or_404(Task, pk=self.kwargs['pk'])
-        context['form']=TaskForm(instance=context['task'])
-        return context
+    def dispatch(self, request, *args, **kwargs):
+        self.task = get_object_or_404(Task, pk=self.kwargs['pk'])
+        return super().dispatch(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        task = get_object_or_404(Task, pk=self.kwargs['pk'])
-        form = TaskForm(request.POST, instance=task)
-        if form.is_valid():
-            form.save()
-            return redirect('list')
-        return self.render_to_response({
-            'task' : task,
-            'form' : form
-            })
+    def get_object(self):
+        return get_object_or_404(Task, pk=self.kwargs['pk'])
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['instance'] = self.task
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        return redirect('detail', pk=self.task.pk)
 
 class DeleteView(TemplateView):
     template_name = 'webapp/delete.html'

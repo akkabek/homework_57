@@ -19,3 +19,9 @@ class Task(models.Model):
     type = models.ManyToManyField(Type, verbose_name='Тип')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Время обновления')
+
+class Project(models.Model):
+    begin_date = models.DateField(null=False, blank=False, verbose_name='Дата начала')
+    end_date = models.DateField(null=True, blank=True, verbose_name='Дата окончания')
+    title = models.CharField(null=False, blank=False, max_length=100, verbose_name='Название')
+    description = models.TextField(null=False, blank=False, max_length=500, verbose_name='Описание')

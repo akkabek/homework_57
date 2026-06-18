@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from django import forms
 from django.forms import ModelForm
-from issuetracker.models import Task
+from issuetracker.models import Task, Project
 
 class TaskForm(ModelForm):
     class Meta:
@@ -35,3 +35,14 @@ class TaskForm(ModelForm):
             raise ValidationError('Заголовок слишком короткий!')
 
         return summary
+
+class ProjectForm(ModelForm):
+    class Meta:
+        model = Project
+        fields = ('title', 'description', 'begin_date', 'end_date')
+        widgets = {
+            'title':       forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'begin_date':  forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'end_date':    forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+        }

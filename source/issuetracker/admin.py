@@ -1,9 +1,9 @@
 from django.contrib import admin
 
-from issuetracker.models import Type, Task, Status
+from issuetracker.models import Type, Task, Status, Project
 
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ['id','summary', 'status', 'get_types','created_at','updated_at']
+    list_display = ['id','summary','project', 'status', 'get_types','created_at','updated_at']
     list_filter = ['status','type', 'created_at']
     search_fields = ['summary']
     fields = ['summary','description' ,'status', 'type','created_at','updated_at']
@@ -20,6 +20,10 @@ class StatusAdmin(admin.ModelAdmin):
 class TypeAdmin(admin.ModelAdmin):
     list_display = ['id','name']
 
+class ProjectAdmin(admin.ModelAdmin):
+    list_display = ['id', 'title', 'begin_date', 'end_date']
+
 admin.site.register(Type, TypeAdmin)
 admin.site.register(Task, TaskAdmin)
 admin.site.register(Status, StatusAdmin)
+admin.site.register(Project, ProjectAdmin)

@@ -2,7 +2,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.db.models import Q
 
-from issuetracker.forms import TaskForm
+from issuetracker.forms import ProjectForm
 from issuetracker.models import Project
 from django.shortcuts import get_object_or_404, redirect
 
@@ -32,4 +32,15 @@ class ProjectDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['tasks'] = self.object.task_set.all()
+        return context
+
+class ProjectCreateView(CreateView):
+    template_name = 'projects/project_form.html'
+    model = Project
+    form_class = ProjectForm
+    success_url = reverse_lazy('projects_list')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Создание проекта'
         return context

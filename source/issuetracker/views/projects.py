@@ -4,7 +4,7 @@ from django.db.models import Q
 
 from issuetracker.forms import ProjectForm
 from issuetracker.models import Project
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, reverse
 
 class ProjectListView(ListView):
     template_name = 'projects/project_list.html'
@@ -43,4 +43,17 @@ class ProjectCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Создание проекта'
+        return context
+
+class ProjectUpdateView(UpdateView):
+    template_name = 'projects/project_form.html'
+    model = Project
+    form_class = ProjectForm
+
+    def get_success_url(self):
+        return reverse('projects_detail', kwargs={'pk': self.object.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Редактирование проекта'
         return context

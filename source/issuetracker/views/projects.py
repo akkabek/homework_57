@@ -2,7 +2,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.db.models import Q
 
-from issuetracker.forms import ProjectForm
+from issuetracker.forms import ProjectForm, TaskCreateForProjectForm
 from issuetracker.models import Project
 from django.shortcuts import get_object_or_404, redirect, reverse
 
@@ -63,3 +63,26 @@ class ProjectDeleteView(DeleteView):
     model = Project
     success_url = reverse_lazy('projects_list')
     context_object_name = 'project'
+
+class TaskCreateInProjectView(CreateView):
+    template_name = 'tasks/task_create_in_project.html'
+    form_class = TaskCreateForProjectForm
+
+    def dispatch(self, request, *args, **kwargs):
+        self.project = get_object_or_404(Project, pk=self.kwargs['project_pk'])
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        task = form.save(commit=False)
+        task.project = self.project
+        task.save()
+        form.save_m2m()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('projects_detail', kwargs={'pk': self.project.pk})
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['project'] = self.project
+        return context

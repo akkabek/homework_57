@@ -24,7 +24,7 @@
         <tbody>
             {% for project in projects %}
             <tr>
-                <td><a href="#">{{ project.title }}</a></td>
+                <td><a href="{% url 'project_detail' project.pk %}">{{ project.title }}</a></td>
                 <td>{{ project.begin_date }}</td>
                 <td>{{ project.end_date|default:"—" }}</td>
                 <td>

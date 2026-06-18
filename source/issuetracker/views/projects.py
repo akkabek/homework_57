@@ -23,3 +23,13 @@ class ProjectListView(ListView):
         context = super().get_context_data(**kwargs)
         context['q'] = self.request.GET.get('q', '')
         return context
+
+class ProjectDetailView(DetailView):
+    template_name = 'projects/project_detail.html'
+    model = Project
+    context_object_name = 'project'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tasks'] = self.object.task_set.all()
+        return context

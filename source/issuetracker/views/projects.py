@@ -57,3 +57,9 @@ class ProjectUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Редактирование проекта'
         return context
+
+class ProjectDeleteView(DeleteView):
+    template_name = 'projects/project_confirm_delete.html'
+    model = Project
+    success_url = reverse_lazy('projects_list')
+    context_object_name = 'project'

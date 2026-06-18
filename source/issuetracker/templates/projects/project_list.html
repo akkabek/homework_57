@@ -29,7 +29,7 @@
                 <td>{{ project.end_date|default:"—" }}</td>
                 <td>
                     <a href="{% url 'project_update' project.pk %}" class="btn btn-primary btn-sm">Изменить</a>
-                    <a href="#" class="btn btn-danger btn-sm">Удалить</a>
+                    <a href="{% url 'project_delete' project.pk %}" class="btn btn-danger btn-sm">Удалить</a>
                 </td>
             </tr>
             {% endfor %}

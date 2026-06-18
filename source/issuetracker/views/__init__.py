@@ -7,3 +7,4 @@ from issuetracker.views.projects import ProjectListView
 from issuetracker.views.projects import ProjectDetailView
 from issuetracker.views.projects import ProjectCreateView
 from issuetracker.views.projects import ProjectUpdateView
+from issuetracker.views.projects import ProjectDeleteView

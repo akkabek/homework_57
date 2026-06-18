@@ -31,8 +31,6 @@ class Task(models.Model):
     project = models.ForeignKey(
         Project,
         on_delete=models.RESTRICT,
-        null=True,
-        blank=True,
         verbose_name="Проект"
     )
 

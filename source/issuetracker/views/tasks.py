@@ -5,7 +5,7 @@ from issuetracker.forms import TaskForm
 from issuetracker.models import Task
 from django.shortcuts import get_object_or_404, redirect
 
-class IndexView(TemplateView):
+class TaskListView(TemplateView):
     template_name = 'tasks/task_index.html'
 
     def get_context_data(self, **kwargs):
@@ -15,7 +15,7 @@ class IndexView(TemplateView):
 
         return context
 
-class DetailView(TemplateView):
+class TaskDetailView(TemplateView):
     template_name = 'tasks/task_detail.html'
 
     def get_context_data(self, **kwargs):
@@ -23,7 +23,7 @@ class DetailView(TemplateView):
         context['task'] = get_object_or_404(Task, pk=self.kwargs['pk'])
         return context
 
-class CreateView(FormView):
+class TaskCreateView(FormView):
     template_name = 'tasks/task_create.html'
     form_class = TaskForm
     success_url = reverse_lazy('list')
@@ -32,7 +32,7 @@ class CreateView(FormView):
         form.save()
         return super().form_valid(form)
 
-class UpdateView(FormView):
+class TaskUpdateView(FormView):
     template_name = 'tasks/task_update.html'
     form_class = TaskForm
 
@@ -52,7 +52,7 @@ class UpdateView(FormView):
         form.save()
         return redirect('detail', pk=self.task.pk)
 
-class DeleteView(TemplateView):
+class TaskDeleteView(TemplateView):
     template_name = 'tasks/task_delete.html'
 
     def get_context_data(self, **kwargs):

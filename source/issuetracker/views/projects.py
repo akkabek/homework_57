@@ -6,5 +6,4 @@ from issuetracker.models import Project
 from django.shortcuts import get_object_or_404, redirect
 
 class ProjectListView(ListView):
-    model = Project
-    
+    template_name =

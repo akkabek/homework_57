@@ -28,7 +28,13 @@ class Task(models.Model):
     type = models.ManyToManyField(Type, verbose_name='Тип')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Время создания')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Время обновления')
-    project = models.ForeignKey(Project, on_delete=models.RESTRICT, verbose_name="Проект")
+    project = models.ForeignKey(
+        Project,
+        on_delete=models.RESTRICT,
+        null=True,
+        blank=True,
+        verbose_name="Проект"
+    )
 
     def __str__(self):
         return self.summary

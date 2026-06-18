@@ -6,4 +6,19 @@ from issuetracker.models import Project
 from django.shortcuts import get_object_or_404, redirect
 
 class ProjectListView(ListView):
-    template_name =
+    template_name = 'projects/project_list.html'
+    model = Project
+    context_object_name = 'projects'
+    paginate_by = 5
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        query = self.request.GET.get('q', '').strip()
+        if query:
+            qs = qs.filter(Q(title__icontains=query) | Q(description__icontains=query))
+        return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['q'] = self.request.GET.get('q', '')
+        return context

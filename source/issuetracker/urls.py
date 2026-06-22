@@ -1,7 +1,7 @@
 from django.urls import path
-from issuetracker.views import TaskDetailView, TaskUpdateView, TaskDeleteView, \
-    ProjectDeleteView
-from issuetracker.views import ProjectListView, ProjectDetailView, ProjectCreateView, ProjectUpdateView, TaskCreateInProjectView
+from issuetracker.views import TaskDetailView, TaskUpdateView, TaskDeleteView
+from issuetracker.views import (ProjectListView, ProjectDetailView, ProjectCreateView,
+                                ProjectUpdateView, ProjectDeleteView, TaskCreateInProjectView)
 
 urlpatterns = [
     path('', ProjectListView.as_view(), name='projects_list'),

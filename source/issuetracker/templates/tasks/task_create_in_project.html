@@ -7,6 +7,6 @@
     {% csrf_token %}
     {% include 'partial/task_form.html' %}
     <button type="submit" class="btn btn-primary">Сохранить</button>
-    <a href="{% url 'project_detail' project.pk %}" class="btn btn-secondary">Отмена</a>
+    <a href="{% url 'issuetracker:project_detail' project.pk %}" class="btn btn-secondary">Отмена</a>
 </form>
 {% endblock %}

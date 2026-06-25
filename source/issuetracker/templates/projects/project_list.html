@@ -7,7 +7,7 @@
     <input type="text" name="q" value="{{ q }}" class="form-control" placeholder="Поиск по названию или описанию...">
     <button type="submit" class="btn btn-primary">Найти</button>
     {% if q %}
-        <a href="{% url 'projects_list' %}" class="btn btn-secondary">Сбросить</a>
+        <a href="{% url 'issuetracker:projects_list' %}" class="btn btn-secondary">Сбросить</a>
     {% endif %}
 </form>
 
@@ -24,12 +24,12 @@
         <tbody>
             {% for project in projects %}
             <tr>
-                <td><a href="{% url 'project_detail' project.pk %}">{{ project.title }}</a></td>
+                <td><a href="{% url 'issuetracker:project_detail' project.pk %}">{{ project.title }}</a></td>
                 <td>{{ project.begin_date }}</td>
                 <td>{{ project.end_date|default:"—" }}</td>
                 <td>
-                    <a href="{% url 'project_update' project.pk %}" class="btn btn-primary btn-sm">Изменить</a>
-                    <a href="{% url 'project_delete' project.pk %}" class="btn btn-danger btn-sm">Удалить</a>
+                    <a href="{% url 'issuetracker:project_update' project.pk %}" class="btn btn-primary btn-sm">Изменить</a>
+                    <a href="{% url 'issuetracker:project_delete' project.pk %}" class="btn btn-danger btn-sm">Удалить</a>
                 </td>
             </tr>
             {% endfor %}

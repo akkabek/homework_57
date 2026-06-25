@@ -38,7 +38,7 @@ class ProjectCreateView(CreateView):
     template_name = 'projects/project_form.html'
     model = Project
     form_class = ProjectForm
-    success_url = reverse_lazy('projects_list')
+    success_url = reverse_lazy('issuetracker:projects_list')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -51,7 +51,7 @@ class ProjectUpdateView(UpdateView):
     form_class = ProjectForm
 
     def get_success_url(self):
-        return reverse('project_detail', kwargs={'pk': self.object.pk})
+        return reverse('issuetracker:project_detail', kwargs={'pk': self.object.pk})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -61,7 +61,7 @@ class ProjectUpdateView(UpdateView):
 class ProjectDeleteView(DeleteView):
     template_name = 'projects/project_confirm_delete.html'
     model = Project
-    success_url = reverse_lazy('projects_list')
+    success_url = reverse_lazy('issuetracker:projects_list')
     context_object_name = 'project'
 
 class TaskCreateInProjectView(CreateView):
@@ -80,7 +80,7 @@ class TaskCreateInProjectView(CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('project_detail', kwargs={'pk': self.project.pk})
+        return reverse('issuetracker:project_detail', kwargs={'pk': self.project.pk})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

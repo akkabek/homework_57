@@ -3,6 +3,8 @@ from issuetracker.views import TaskDetailView, TaskUpdateView, TaskDeleteView
 from issuetracker.views import (ProjectListView, ProjectDetailView, ProjectCreateView,
                                 ProjectUpdateView, ProjectDeleteView, TaskCreateInProjectView)
 
+
+app_name = 'issuetracker'
 urlpatterns = [
     path('', ProjectListView.as_view(), name='projects_list'),
     path('tasks/<int:pk>', TaskDetailView.as_view(), name='detail'),

@@ -17,7 +17,7 @@ class TaskUpdateView(UpdateView):
     context_object_name = 'task'
 
     def get_success_url(self):
-        return reverse('detail', kwargs={'pk': self.object.pk})
+        return reverse('issuetracker:detail', kwargs={'pk': self.object.pk})
 
 
 class TaskDeleteView(DeleteView):
@@ -26,4 +26,4 @@ class TaskDeleteView(DeleteView):
     context_object_name = 'task'
 
     def get_success_url(self):
-        return reverse('project_detail', kwargs={'pk': self.object.project.pk})
+        return reverse('issuetracker:project_detail', kwargs={'pk': self.object.project.pk})

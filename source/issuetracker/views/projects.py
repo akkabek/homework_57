@@ -4,7 +4,8 @@ from django.db.models import Q
 
 from issuetracker.forms import ProjectForm, TaskCreateForProjectForm
 from issuetracker.models import Project
-from django.shortcuts import get_object_or_404, reverse
+from django.shortcuts import get_object_or_404, reverse, redirect
+
 
 class ProjectListView(ListView):
     template_name = 'projects/project_list.html'
@@ -45,6 +46,11 @@ class ProjectCreateView(CreateView):
         context['title'] = 'Создание проекта'
         return context
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return super().dispatch(request, *args, **kwargs)
+        return redirect('accounts:login')
+
 class ProjectUpdateView(UpdateView):
     template_name = 'projects/project_form.html'
     model = Project
@@ -58,19 +64,31 @@ class ProjectUpdateView(UpdateView):
         context['title'] = 'Редактирование проекта'
         return context
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return super().dispatch(request, *args, **kwargs)
+        return redirect('accounts:login')
+
 class ProjectDeleteView(DeleteView):
     template_name = 'projects/project_confirm_delete.html'
     model = Project
     success_url = reverse_lazy('issuetracker:projects_list')
     context_object_name = 'project'
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return super().dispatch(request, *args, **kwargs)
+        return redirect('accounts:login')
+
 class TaskCreateInProjectView(CreateView):
     template_name = 'tasks/task_create_in_project.html'
     form_class = TaskCreateForProjectForm
 
     def dispatch(self, request, *args, **kwargs):
-        self.project = get_object_or_404(Project, pk=self.kwargs['project_pk'])
-        return super().dispatch(request, *args, **kwargs)
+        if request.user.is_authenticated:
+            self.project = get_object_or_404(Project, pk=self.kwargs['project_pk'])
+            return super().dispatch(request, *args, **kwargs)
+        return redirect('accounts:login')
 
     def form_valid(self, form):
         task = form.save(commit=False)

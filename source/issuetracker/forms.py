@@ -76,3 +76,12 @@ class TaskCreateForProjectForm(ModelForm):
         if len(summary) < 7:
             raise ValidationError('Заголовок слишком короткий!')
         return summary
+
+
+class ProjectUsersForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = ["users"]
+        widgets = {
+            "users": forms.CheckboxSelectMultiple(),
+        }

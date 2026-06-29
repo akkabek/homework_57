@@ -37,7 +37,7 @@ class ProjectDetailView(DetailView):
         context['tasks'] = self.object.task_set.all()
         return context
 
-class ProjectCreateView(ProjectPermissionMixin,CreateView):
+class ProjectCreateView(CreateView):
     template_name = 'projects/project_form.html'
     model = Project
     form_class = ProjectForm

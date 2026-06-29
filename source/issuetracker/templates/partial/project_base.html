@@ -19,6 +19,7 @@
             <a href="{% url 'issuetracker:project_create' %}" class="btn btn-light">+ Проект</a>
         {% else %}
             <a href="{% url 'accounts:login' %}" class="btn btn-light">Войти</a>
+            <a class="btn btn-light" href="{% url 'accounts:register' %}?next={{ request.get_full_path }}">Регистрация</a>
         {% endif %}
     </div>
 </nav>

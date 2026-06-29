@@ -1,0 +1,19 @@
+{% extends 'partial/project_base.html' %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+
+<div class="card my-5 w-50 mx-auto">
+    <div class="card-header fs-4 text-center py-3">Регистрация</div>
+    <div class="card-body">
+        <form action="" id="myusercreation-form" method="POST">
+            {% csrf_token %}
+            {% bootstrap_form form layout="floating" %}
+        </form>
+    </div>
+    <div class="card-footer text-end py-3">
+        <button type="submit" form="myusercreation-form" class="btn btn-sm btn-primary">Сохранить</button>
+    </div>
+</div>
+
+{% endblock content %}

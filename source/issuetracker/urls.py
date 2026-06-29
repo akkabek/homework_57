@@ -1,7 +1,8 @@
 from django.urls import path
 from issuetracker.views import TaskDetailView, TaskUpdateView, TaskDeleteView
 from issuetracker.views import (ProjectListView, ProjectDetailView, ProjectCreateView,
-                                ProjectUpdateView, ProjectDeleteView, TaskCreateInProjectView)
+                                ProjectUpdateView, ProjectDeleteView, TaskCreateInProjectView,
+                                ProjectUsersUpdateView)
 
 
 app_name = 'issuetracker'
@@ -17,5 +18,7 @@ urlpatterns = [
     path('projects/delete/<int:pk>', ProjectDeleteView.as_view(), name='project_delete'),
 
     path('projects/<int:project_pk>/tasks/create/', TaskCreateInProjectView.as_view(), name='task_create_in_project'),
+    path('projects/<int:pk>/users', ProjectUsersUpdateView.as_view(), name='project_manage_users'),
+
 
 ]

@@ -2,7 +2,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.db.models import Q
 
-from issuetracker.forms import ProjectForm, TaskCreateForProjectForm
+from issuetracker.forms import ProjectForm, TaskCreateForProjectForm, ProjectUsersForm
 from issuetracker.models import Project
 from django.shortcuts import get_object_or_404, reverse, redirect
 
@@ -50,6 +50,11 @@ class ProjectCreateView(CreateView):
         if request.user.is_authenticated:
             return super().dispatch(request, *args, **kwargs)
         return redirect('accounts:login')
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        self.object.users.add(self.request.user)
+        return response
 
 class ProjectUpdateView(UpdateView):
     template_name = 'projects/project_form.html'
@@ -104,3 +109,14 @@ class TaskCreateInProjectView(CreateView):
         context = super().get_context_data(**kwargs)
         context['project'] = self.project
         return context
+
+class ProjectUsersUpdateView(UpdateView):
+    model = Project
+    form_class = ProjectUsersForm
+    template_name = "projects/project_manage_users.html"
+
+    def get_success_url(self):
+        return reverse_lazy(
+            "issuetracker:project_detail",
+            kwargs={"pk": self.object.pk},
+        )

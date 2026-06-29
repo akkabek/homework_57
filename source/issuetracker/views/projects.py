@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.db.models import Q
@@ -5,6 +6,7 @@ from django.db.models import Q
 from issuetracker.forms import ProjectForm, TaskCreateForProjectForm, ProjectUsersForm
 from issuetracker.models import Project
 from django.shortcuts import get_object_or_404, reverse, redirect
+from issuetracker.mixins import ProjectPermissionMixin
 
 
 class ProjectListView(ListView):
@@ -35,11 +37,12 @@ class ProjectDetailView(DetailView):
         context['tasks'] = self.object.task_set.all()
         return context
 
-class ProjectCreateView(CreateView):
+class ProjectCreateView(ProjectPermissionMixin,CreateView):
     template_name = 'projects/project_form.html'
     model = Project
     form_class = ProjectForm
     success_url = reverse_lazy('issuetracker:projects_list')
+    permission_required = 'issuetracker.add_project'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -56,10 +59,11 @@ class ProjectCreateView(CreateView):
         self.object.users.add(self.request.user)
         return response
 
-class ProjectUpdateView(UpdateView):
+class ProjectUpdateView(ProjectPermissionMixin,UpdateView):
     template_name = 'projects/project_form.html'
     model = Project
     form_class = ProjectForm
+    permission_required = 'issuetracker.change_project'
 
     def get_success_url(self):
         return reverse('issuetracker:project_detail', kwargs={'pk': self.object.pk})
@@ -74,20 +78,22 @@ class ProjectUpdateView(UpdateView):
             return super().dispatch(request, *args, **kwargs)
         return redirect('accounts:login')
 
-class ProjectDeleteView(DeleteView):
+class ProjectDeleteView(ProjectPermissionMixin,DeleteView):
     template_name = 'projects/project_confirm_delete.html'
     model = Project
     success_url = reverse_lazy('issuetracker:projects_list')
     context_object_name = 'project'
+    permission_required = 'issuetracker.delete_project'
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return super().dispatch(request, *args, **kwargs)
         return redirect('accounts:login')
 
-class TaskCreateInProjectView(CreateView):
+class TaskCreateInProjectView(ProjectPermissionMixin, CreateView):
     template_name = 'tasks/task_create_in_project.html'
     form_class = TaskCreateForProjectForm
+    permission_required = 'issuetracker.add_task'
 
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -110,10 +116,11 @@ class TaskCreateInProjectView(CreateView):
         context['project'] = self.project
         return context
 
-class ProjectUsersUpdateView(UpdateView):
+class ProjectUsersUpdateView(ProjectPermissionMixin, UpdateView):
     model = Project
     form_class = ProjectUsersForm
     template_name = "projects/project_manage_users.html"
+    permission_required = 'issuetracker.manage_users'
 
     def get_success_url(self):
         return reverse_lazy(

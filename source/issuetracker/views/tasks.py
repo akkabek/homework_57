@@ -1,6 +1,7 @@
 from django.views.generic import DetailView, UpdateView, DeleteView
 
 from issuetracker.forms import TaskForm
+from issuetracker.mixins import ProjectPermissionMixin
 from issuetracker.models import Task
 from django.shortcuts import reverse, redirect
 
@@ -10,11 +11,12 @@ class TaskDetailView(DetailView):
     context_object_name = 'task'
 
 
-class TaskUpdateView(UpdateView):
+class TaskUpdateView(ProjectPermissionMixin, UpdateView):
     template_name = 'tasks/task_update.html'
     model = Task
     form_class = TaskForm
     context_object_name = 'task'
+    permission_required = 'issuetracker.change_task'
 
     def get_success_url(self):
         return reverse('issuetracker:detail', kwargs={'pk': self.object.pk})
@@ -25,10 +27,11 @@ class TaskUpdateView(UpdateView):
         return redirect('accounts:login')
 
 
-class TaskDeleteView(DeleteView):
+class TaskDeleteView(ProjectPermissionMixin, DeleteView):
     template_name = 'tasks/task_delete.html'
     model = Task
     context_object_name = 'task'
+    permission_required = 'issuetracker.delete_task'
 
     def get_success_url(self):
         return reverse('issuetracker:project_detail', kwargs={'pk': self.object.project.pk})

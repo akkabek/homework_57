@@ -6,4 +6,9 @@ class ProjectPermissionMixin(PermissionRequiredMixin):
         if not super().has_permission():
             return False
 
-        return self.request.user in self.get_object().users.all()
+        if self.request.user.is_superuser:
+            return True
+
+        return self.get_object().users.filter(
+            pk=self.request.user.pk
+        ).exists()

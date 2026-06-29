@@ -8,6 +8,15 @@
         <p><strong>Дата начала:</strong> {{ project.begin_date }}</p>
         <p><strong>Дата окончания:</strong> {{ project.end_date|default:"—" }}</p>
         <hr>
+        <a href="{% url 'issuetracker:project_manage_users' project.pk %}">Участники</a>
+            <ul>
+                {% for user in project.users.all %}
+                    <li>{{ user.username }}</li>
+                {% empty %}
+                    <li>Нет участников</li>
+                {% endfor %}
+            </ul>
+        <hr>
         <p><strong>Описание:</strong></p>
         <p style="white-space: pre-wrap;">{{ project.description }}</p>
     </div>

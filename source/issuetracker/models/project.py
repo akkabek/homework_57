@@ -18,3 +18,8 @@ class Project(models.Model):
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        permissions = [
+            ("manage_users", "Can manage project users"),
+        ]
